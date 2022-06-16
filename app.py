@@ -170,7 +170,7 @@ elif choose == "Toronto condo price prediction":
                                    edu_coll_or_univ_cert, population_35_49_years, tenancy_property_type_semi_detached,
                                    tenancy_property_type_low_rise, bedrooms_plus_field, east_end, east_york, etobicoke,
                                    midtown]]).astype(np.float64)
-        predict_df = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/predict_dataset.csv',
+        predict_df = pd.read_csv('predict_dataset.csv',
                                  index_col=[0])
         scaler = StandardScaler()
         X_train_Test = scaler.fit_transform(predict_df.values)
@@ -205,7 +205,7 @@ elif choose == "Condo clustering":
     # st.image(grayscale)
 
 elif choose == "Condo search engine":
-    before_norm = pd.read_csv(('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/before_norm.csv'),
+    before_norm = pd.read_csv(('before_norm.csv'),
                               index_col=[0])
     st.sidebar.info('7 Mandatory Filters')
     st.sidebar.info('Please select values in each of following 7 mandatory filters, otherwise system will show error')
@@ -415,7 +415,7 @@ elif choose == "Condo search engine":
     """
     st.markdown(html_temp, unsafe_allow_html=True)
     st.write('Please select the weight for each of your customized criteria')
-    api_df = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/api_df.csv',
+    api_df = pd.read_csv('api_df.csv',
                          index_col=[0])
     column_list = api_df.columns.tolist()
     weight_list = []
@@ -514,7 +514,7 @@ elif choose == "Condo search engine":
 
         # merge with those before normalize data and also get street info
         merge = final_rank_moora.merge(before_norm, how='left', on='index')
-        street_info = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/street.csv',
+        street_info = pd.read_csv('street.csv',
                                   index_col=[0])
         merge = merge.copy()
         merge = merge.merge(street_info, how='left', on='index')
