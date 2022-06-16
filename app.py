@@ -37,8 +37,8 @@ if choose == "About":
     font-size:35px ; font-family: 'Cooper Black'; color: #FF9633;} 
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">User Guide</p>', unsafe_allow_html=True)
-    user_guide = "https://github.com/Libby007/condo_ds_project/blob/main/MergedImages.png"
-    st.image(user_guide, width=1000)
+    #user_guide = "https://github.com/Libby007/condo_ds_project/blob/main/MergedImages.png"
+    st.image("MergedImages.png", width=1000)
 
 elif choose == "Toronto condo price prediction":
 
