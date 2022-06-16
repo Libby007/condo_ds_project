@@ -42,7 +42,7 @@ if choose == "About":
 
 elif choose == "Toronto condo price prediction":
 
-    pickle_inn = open('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/xgb.pkl', 'rb')
+    pickle_inn = open('xgb.pkl', 'rb')
     model = pickle.load(pickle_inn)
 
     # predict price
@@ -191,7 +191,7 @@ elif choose == "Toronto condo price prediction":
 
 elif choose == "Condo clustering":
     # open pdf
-    with open('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/api_cluster_ppt/cluster_ppt.pdf', "rb") as f:
+    with open('cluster_ppt.pdf', "rb") as f:
         base64_pdf = base64.b64encode(f.read()).decode('utf-8')
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1100" height="1000" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
@@ -629,7 +629,7 @@ elif choose == "Algorithm theory and principle":
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">The underlying theory and principle of project</p>', unsafe_allow_html=True)
     # open pdf
-    with open('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/api_cluster_ppt/theory_ppt.pdf', "rb") as f:
+    with open('theory_ppt.pdf', "rb") as f:
         base64_pdf = base64.b64encode(f.read()).decode('utf-8')
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1100" height="1000" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
