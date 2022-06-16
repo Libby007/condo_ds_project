@@ -2,3 +2,4 @@ pandas
 numpy
 sklearn
 streamlit
+streamlit_option_menu
