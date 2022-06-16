@@ -197,14 +197,6 @@ elif choose == "Condo clustering":
 #     st.markdown(pdf_display, unsafe_allow_html=True)
     st.image("cluster.png", width=1000)
 
-    # # displaying the image on streamlit app
-    # st.write('7 clusters with their centroids in 2 Dimensions')
-    # original = Image.open('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/2d.png')
-    # st.image(original)
-    # st.write('7 clusters with their centroids in 3 Dimensions')
-    # grayscale = Image.open('/Users/xiaoxuchen/Downloads/3d.png')
-    # st.image(grayscale)
-
 elif choose == "Condo search engine":
     before_norm = pd.read_csv(('before_norm.csv'),
                               index_col=[0])
