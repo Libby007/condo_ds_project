@@ -1,19 +1,23 @@
 import base64
+import pickle
 
-import streamlit as st
-import pandas as pd
 import numpy as np
-from PIL import Image
+import pandas as pd
+import streamlit as st
 from sklearn.preprocessing import StandardScaler
 from streamlit_option_menu import option_menu
-import pickle
+
+import gspread
+from df2gspread import df2gspread as d2g
+from oauth2client.service_account import ServiceAccountCredentials
+from itertools import chain
 
 # menu
 with st.sidebar:
     choose = option_menu("DS Project",
-                         ["About", "Toronto condo price prediction", "Condo clustering", "Condo search engine",
-                          "Algorithm theory and principle"],
-                         icons=['fingerprint', 'house fill', 'kanban', 'google', 'book'],
+                         ["About", "Toronto condo price prediction", "Condo clustering", "Condo search engine"
+                             , "Multi-criteria ranked condos", "Algorithm theory and principle"],
+                         icons=['fingerprint', 'house fill', 'kanban', 'google', 'award', 'book'],
                          menu_icon="app-indicator", default_index=0,
                          styles={
                              "container": {"padding": "5!important", "background-color": "#fafafa"},
@@ -396,9 +400,36 @@ elif choose == "Condo search engine":
             merge = api_df.merge(before_norm, how='left', on='index')
             geo_df = merge[['latitude', 'longitude']]
             # st.write(geo_df)
-            api_df.to_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/api_df.csv')
             st.map(geo_df)
+                        # write  data frame api_df to google sheet
+            scope = ['https://spreadsheets.google.com/feeds',
+                     'https://www.googleapis.com/auth/drive']
+            credentials = ServiceAccountCredentials.from_json_keyfile_name(
+                'streamlit-353615-491ac72605bb.json', scope)
+            gc = gspread.authorize(credentials)
 
+            spreadsheet_key = '1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0'
+            wks_name = 'Sheet1'
+            d2g.upload(api_df, spreadsheet_key, wks_name, credentials=credentials, row_names=True)
+
+            # write list to google sheet2
+            region_selection = pd.DataFrame(position_choice, columns=['region'])
+            d2g.upload(region_selection, spreadsheet_key, 'Sheet2', credentials=credentials, row_names=True)
+            
+elif choose == "Multi-criteria ranked condos":
+    st.sidebar.info('Please finish part "Condo search engine" before you jump to this part!')
+    # read google sheet data frame
+    gc = gspread.service_account(filename='streamlit-353615-491ac72605bb.json')
+    sh = gc.open_by_url(
+        'https://docs.google.com/spreadsheets/d/1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0/edit#gid=0')
+    ws = sh.worksheet('Sheet1')
+    api_df = pd.DataFrame(ws.get_all_records()).iloc[:, 1:]
+    # read region list from google sheet2
+    # st.write(api_df)
+    ws_2 = sh.worksheet('Sheet2')
+    temp_region = pd.DataFrame(ws_2.get_all_records()).iloc[:, 1:]
+    region_list = temp_region.values.tolist()  # convert data frame to list
+    position_choice = list(chain(*region_list))  # merge 2 lists to 1 list
     # weight
     html_temp = """
     <div style="background-color:#025246;padding:8px">
@@ -408,8 +439,8 @@ elif choose == "Condo search engine":
     """
     st.markdown(html_temp, unsafe_allow_html=True)
     st.write('Please select the weight for each of your customized criteria')
-    api_df = pd.read_csv('api_df.csv',
-                         index_col=[0])
+    before_norm = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/before_norm.csv',
+                              index_col=[0])
     column_list = api_df.columns.tolist()
     weight_list = []
     region_choose_list = []
@@ -436,7 +467,6 @@ elif choose == "Condo search engine":
         # transform categorical column toronto_region
         api_df = pd.concat([api_df, pd.get_dummies(api_df.toronto_region)], axis=1)
         api_df = api_df.drop(['toronto_region', 'index'], axis=1).copy()
-
 
         # st.write(api_df)
 
@@ -499,15 +529,18 @@ elif choose == "Condo search engine":
         final_moora['moora'] = final_moora['beneficial'] - final_moora['non_beneficial']
         # get rank column, highest score rank 1, same score has same rank
         final_moora['rank'] = final_moora['moora'].rank(method='max', ascending=0)
+        final_moora['index'] = pd.DataFrame(ws.get_all_records()).iloc[:, 1:]['index']
+        # st.write(final_moora)
 
         # st.write(final_moora[final_moora['rank'] < 6])
         st.write('Check your ranked condo result based on your multi-criteria weights')
         final_rank_moora = final_moora[final_moora['rank'] < 6].copy()
-        final_rank_moora['index'] = final_rank_moora.index.to_list()
+        # final_rank_moora['index'] = final_rank_moora.index.to_list()
+        # st.write(final_rank_moora)
 
         # merge with those before normalize data and also get street info
         merge = final_rank_moora.merge(before_norm, how='left', on='index')
-        street_info = pd.read_csv('street.csv',
+        street_info = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/street.csv',
                                   index_col=[0])
         merge = merge.copy()
         merge = merge.merge(street_info, how='left', on='index')
@@ -577,8 +610,10 @@ elif choose == "Condo search engine":
         final_TOPSIS_rank = pd.concat([final_topsis, performance_score], axis=1)
         final_TOPSIS_rank = final_TOPSIS_rank.copy()
         final_TOPSIS_rank['rank'] = final_TOPSIS_rank['Performance'].rank(method='max', ascending=0)
+        final_TOPSIS_rank['index'] = pd.DataFrame(ws.get_all_records()).iloc[:, 1:]['index']
+        # st.write(final_TOPSIS_rank)
         final_TOPSIS_rank = final_TOPSIS_rank[final_TOPSIS_rank['rank'] < 6]
-        final_TOPSIS_rank['index'] = final_TOPSIS_rank.index.to_list()
+        # final_TOPSIS_rank['index'] = final_TOPSIS_rank.index.to_list()
         # st.write(final_TOPSIS_rank)
 
         # merge with those before normalize data and also get street info
@@ -614,6 +649,7 @@ elif choose == "Condo search engine":
                 st.info('Please select your multi-criteria method!')
     else:
         st.error('Please choose weight for your customized multi-criteria!')
+
 
 elif choose == "Algorithm theory and principle":
 
