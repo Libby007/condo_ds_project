@@ -540,7 +540,7 @@ elif choose == "Multi-criteria ranked condos":
 
         # merge with those before normalize data and also get street info
         merge = final_rank_moora.merge(before_norm, how='left', on='index')
-        street_info = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/data/street.csv',
+        street_info = pd.read_csv('street.csv',
                                   index_col=[0])
         merge = merge.copy()
         merge = merge.merge(street_info, how='left', on='index')
