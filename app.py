@@ -439,7 +439,7 @@ elif choose == "Multi-criteria ranked condos":
     """
     st.markdown(html_temp, unsafe_allow_html=True)
     st.write('Please select the weight for each of your customized criteria')
-    before_norm = pd.read_csv('/Users/xiaoxuchen/Downloads/DS_interview/DS_project/Python_scrap/before_norm.csv',
+    before_norm = pd.read_csv('before_norm.csv',
                               index_col=[0])
     column_list = api_df.columns.tolist()
     weight_list = []
