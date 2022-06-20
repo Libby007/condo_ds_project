@@ -10,6 +10,7 @@ from streamlit_option_menu import option_menu
 import gspread
 from df2gspread import df2gspread as d2g
 from oauth2client.service_account import ServiceAccountCredentials
+from googleapiclient import discovery
 from itertools import chain
 
 # menu
@@ -419,17 +420,40 @@ elif choose == "Condo search engine":
 elif choose == "Multi-criteria ranked condos":
     st.sidebar.info('Please finish part "Condo search engine" before you jump to this part!')
     # read google sheet data frame
-    gc = gspread.service_account(filename='streamlit-353615-491ac72605bb.json')
+    gc = gspread.service_account(filename='/Users/xiaoxuchen/PycharmProjects/DS/streamlit-353615-491ac72605bb.json')
     sh = gc.open_by_url(
         'https://docs.google.com/spreadsheets/d/1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0/edit#gid=0')
     ws = sh.worksheet('Sheet1')
     api_df = pd.DataFrame(ws.get_all_records()).iloc[:, 1:]
     # read region list from google sheet2
     # st.write(api_df)
-    ws_2 = sh.worksheet('Sheet2')
-    temp_region = pd.DataFrame(ws_2.get_all_records()).iloc[:, 1:]
+    # ws_2 = sh.worksheet('Sheet2')
+    # temp_region = pd.DataFrame(ws_2.get_all_records()).iloc[:, 1:]
+    # region_list = temp_region.values.tolist()  # convert data frame to list
+    # position_choice = list(chain(*region_list))  # merge 2 lists to 1 list
+    # st.write(position_choice)
+
+    # new way to read region list
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        '/Users/xiaoxuchen/PycharmProjects/DS/streamlit-353615-491ac72605bb.json', scope)
+    service = discovery.build('sheets', 'v4', credentials=credentials)
+    spreadsheet_id = '1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0'
+    # ranges = 'Sheet1!A1:Z200'
+    # request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges,
+    #                                               ).execute()
+    # sheet_values = request.get('values', [])
+    # api_df = pd.DataFrame(sheet_values[1:], columns=sheet_values[0]).iloc[:, 1:]
+    # st.write(api_df)
+
+    request2 = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range='Sheet2!A1:B11').execute()
+    sheet2_values = request2.get('values', [])
+    temp_region = pd.DataFrame(sheet2_values[1:], columns=sheet2_values[0]).iloc[:, 1:]
     region_list = temp_region.values.tolist()  # convert data frame to list
     position_choice = list(chain(*region_list))  # merge 2 lists to 1 list
+    # st.write(position_choice)
+    
     # weight
     html_temp = """
     <div style="background-color:#025246;padding:8px">
@@ -438,6 +462,8 @@ elif choose == "Multi-criteria ranked condos":
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
+    st.info('Please be patient to make each of your choice slowly, since it is free version of google platform cloud '
+        'which has limit speed to response to user, i.e. each of your choice needs running time')
     st.write('Please select the weight for each of your customized criteria')
     before_norm = pd.read_csv('before_norm.csv',
                               index_col=[0])
