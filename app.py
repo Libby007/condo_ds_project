@@ -420,7 +420,7 @@ elif choose == "Condo search engine":
 elif choose == "Multi-criteria ranked condos":
     st.sidebar.info('Please finish part "Condo search engine" before you jump to this part!')
     # read google sheet data frame
-    gc = gspread.service_account(filename='/Users/xiaoxuchen/PycharmProjects/DS/streamlit-353615-491ac72605bb.json')
+    gc = gspread.service_account(filename='streamlit-353615-491ac72605bb.json')
     sh = gc.open_by_url(
         'https://docs.google.com/spreadsheets/d/1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0/edit#gid=0')
     ws = sh.worksheet('Sheet1')
@@ -437,7 +437,7 @@ elif choose == "Multi-criteria ranked condos":
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        '/Users/xiaoxuchen/PycharmProjects/DS/streamlit-353615-491ac72605bb.json', scope)
+        'streamlit-353615-491ac72605bb.json', scope)
     service = discovery.build('sheets', 'v4', credentials=credentials)
     spreadsheet_id = '1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0'
     # ranges = 'Sheet1!A1:Z200'
