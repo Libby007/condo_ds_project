@@ -44,7 +44,8 @@ if choose == "About":
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">About the Creator</p>', unsafe_allow_html=True)
     st.write("Libby Chen is a data science practitioner, enthusias."
-             "\n\nTo read more about Libby's data science project posts, please visit her github at: ")
+             "\n\nTo read more about Libby's data science project posts, please visit her github at:
+             https://github.com/Libby007/condo_ds_project ")
 
     st.markdown(""" <style> .font {
     font-size:35px ; font-family: 'Cooper Black'; color: #FF9633;} 
