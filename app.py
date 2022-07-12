@@ -21,6 +21,7 @@ import random
 from streamlit_chat import message
 nltk.download('punkt')
 nltk.download("wordnet") 
+nltk.download('omw-1.4')
 # menu
 with st.sidebar:
     choose = option_menu("DS Project",
