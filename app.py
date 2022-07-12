@@ -19,7 +19,7 @@ from tensorflow.keras.models import load_model
 import json
 import random
 from streamlit_chat import message
-
+nltk.download('punkt')
 # menu
 with st.sidebar:
     choose = option_menu("DS Project",
