@@ -8,7 +8,6 @@ gspread
 df2gspread
 oauth2client
 google-api-python-client
-pickle
 nltk
 json
 random
