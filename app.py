@@ -20,6 +20,7 @@ import json
 import random
 from streamlit_chat import message
 nltk.download('punkt')
+nltk.download("wordnet") 
 # menu
 with st.sidebar:
     choose = option_menu("DS Project",
