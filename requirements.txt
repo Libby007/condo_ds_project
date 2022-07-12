@@ -9,6 +9,4 @@ df2gspread
 oauth2client
 google-api-python-client
 nltk
-json
-random
 tensorflow
