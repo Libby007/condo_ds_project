@@ -10,3 +10,4 @@ oauth2client
 google-api-python-client
 nltk
 tensorflow
+streamlit_chat
