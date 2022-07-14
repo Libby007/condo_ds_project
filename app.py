@@ -446,7 +446,7 @@ elif choose == "Multi-criteria ranked condos":
              'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         'streamlit-353615-491ac72605bb.json', scope)
-    service = discovery.build('sheets', 'v4', credentials=credentials)
+    service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
     spreadsheet_id = '1_JuGM1m6oBy_gLJ2tLTp_KsB7fylbQCj8_wzXYmIap0'
     # ranges = 'Sheet1!A1:Z200'
     # request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges,
