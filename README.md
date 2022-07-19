@@ -8,5 +8,5 @@ multi-criteria via statistics models: MOORA and TOPSIS
 
 User guide:
 1. code that deploy streamlit app to cloud: app.py
-2. backend project code: in code folder
+2. project code: in code folder
 3. the rest of files not in folder are used for deployment
