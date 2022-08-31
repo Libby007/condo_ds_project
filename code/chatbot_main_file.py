@@ -12,7 +12,7 @@ words = []
 classes = []
 documents = []
 ignore_words = ['?', '!']
-data_file = open('/Users/xiaoxuchen/PycharmProjects/DS/chatbot_app/intents1.json').read()
+data_file = open('intents1.json').read()
 intents = json.loads(data_file)
 lemmatizer = WordNetLemmatizer()
 
