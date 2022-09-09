@@ -3,7 +3,7 @@ for interview
 
 the web app link can be found in the first line of my resume
 
-The project includes
+# The project includes
 
 1. condo price prediction: use XGB regressor to predict condo price 
 2. condo cluster: Use partitioning clustering Kmeans algorithm that gathers and groups Toronto condos into 7 number of clusters and provide the ideal suggestion for people to choose condo location via clustering analysis
@@ -11,7 +11,7 @@ The project includes
 multi-criteria via statistics models: MOORA and TOPSIS
 4. chatbot: use NLP and tensorflow to build chatbot app
 
-User guide:
+# User guide:
 1. code for deployment: 
 [app.py](https://github.com/Libby007/condo_ds_project/blob/main/app.py)
 2. project code: 
