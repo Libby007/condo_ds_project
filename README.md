@@ -2,6 +2,7 @@
 for the interview
 
 The project includes
+[I'm an inline-style link](https://www.google.com)
 1. condo price prediction: use XGB regressor to predict condo price 
 2. condo cluster: Use partitioning clustering Kmeans algorithm that gathers and groups Toronto condos into 7 number of clusters and provide the ideal suggestion for people to choose condo location via clustering analysis
 3. top ranked condos: Present top condos after ranking from customized
