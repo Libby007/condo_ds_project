@@ -12,7 +12,7 @@ multi-criteria via statistics models: MOORA and TOPSIS
 4. chatbot: use NLP and tensorflow to build chatbot app
 
 User guide:
-1. code that deploy web app to streamlit cloud: 
+1. code for deployment: 
 [app.py](https://github.com/Libby007/condo_ds_project/blob/main/app.py)
 2. project code: 
 * [web scraping](https://github.com/Libby007/condo_ds_project/blob/main/code/scrape_code.ipynb)
