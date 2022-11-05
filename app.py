@@ -25,7 +25,9 @@ nltk.download('omw-1.4')
 # menu
 with st.sidebar:
     choose = option_menu("DS Project",
-                         ["About", "Toronto condo price prediction", "Condo clustering", "Condo search engine"
+                         ["About", 
+#                           "Toronto condo price prediction", 
+                          "Condo clustering", "Condo search engine"
                              , "Multi-criteria ranked condos", "Talk to AI Libby", "Algorithm theory and principle"],
                          icons=['fingerprint', 'house fill', 'kanban', 'google', 'award', 'robot', 'book'],
                          menu_icon="app-indicator", default_index=0,
