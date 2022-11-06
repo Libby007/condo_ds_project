@@ -79,13 +79,13 @@ print("Training data created")
 model = Sequential()
 model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu')) #split into 128 dimensional
 model.add(Dropout(0.5))
-model.add(Dense(64, activation='relu')) #split into 64 dimensional
+model.add(Dense(64, activation='relu')) #split into 64 dimensional,Applies the rectified linear unit activation function.
 model.add(Dropout(0.3))
-model.add(Dense(len(train_y[0]), activation='softmax')) #output layer
+model.add(Dense(len(train_y[0]), activation='softmax')) #output layer: Softmax converts a vector of values to a probability distribution.
 
 # # Compile model. Stochastic gradient descent with Nesterov accelerated gradient gives good results for this model
-# sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-# model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
+# sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True) 
+# model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy']) 
 #
 # # fitting and saving the model
 # hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
@@ -95,7 +95,7 @@ model.add(Dense(len(train_y[0]), activation='softmax')) #output layer
 
 # Compile model. Stochastic gradient descent with Nesterov accelerated gradient gives good results for this model
 md = tensorflow.keras.optimizers.Adam(learning_rate=0.01, decay=1e-6)
-model.compile(loss='categorical_crossentropy', optimizer=md, metrics=["accuracy"])
+model.compile(loss='categorical_crossentropy', optimizer=md, metrics=["accuracy"]) #A loss function. This is the objective that the model will try to minimize
 
 # fitting and saving the model
 hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, verbose=1)
