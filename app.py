@@ -59,10 +59,10 @@ if choose == "About":
 
 elif choose == "Toronto condo price prediction":
 
-#     pickle_inn = open('xgb.pkl', 'rb')
-#     model = pickle.load(pickle_inn)
-    model = xgb.XGBRegressor()
-    model.load_model('xgb.json')
+    pickle_inn = open('xgb1.pkl', 'rb')
+    model = pickle.load(pickle_inn)
+#     model = xgb.XGBRegressor()
+#     model.load_model('xgb.json')
 
     # predict price
     def main():
