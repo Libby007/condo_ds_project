@@ -19,6 +19,8 @@ from tensorflow.keras.models import load_model
 import json
 import random
 from streamlit_chat import message
+import xgboost as xgb
+
 nltk.download('punkt')
 nltk.download("wordnet") 
 nltk.download('omw-1.4')
@@ -26,7 +28,7 @@ nltk.download('omw-1.4')
 with st.sidebar:
     choose = option_menu("DS Project",
                          ["About", 
-#                           "Toronto condo price prediction", 
+                          "Toronto condo price prediction", 
                           "Condo clustering", "Condo search engine"
                              , "Multi-criteria ranked condos", "Talk to AI Libby", "Algorithm theory and principle"],
                          icons=['fingerprint', 'house fill', 'kanban', 'google', 'award', 'robot', 'book'],
@@ -55,154 +57,156 @@ if choose == "About":
     #user_guide = "https://github.com/Libby007/condo_ds_project/blob/main/MergedImages.png"
     st.image("MergedImages.png", width=1000)
 
-# elif choose == "Toronto condo price prediction":
+elif choose == "Toronto condo price prediction":
 
 #     pickle_inn = open('xgb.pkl', 'rb')
 #     model = pickle.load(pickle_inn)
+      xbg_reg = xgb.XGBRegressor()
+      model = xbg_reg.load_model('xgb.json')
 
-#     # predict price
-#     def main():
-#         # st.subheader('Project 1: Toronto condo price prediction')
-#         html_temp = """
-#         <div style="background-color:#025246 ;padding:10px">
-#         <h2 style="color:white;text-align:center;">
-#         Toronto Condo Price Prediction ML App </h2>
-#         </div>
-#         """
-#         st.markdown(html_temp, unsafe_allow_html=True)
-#         st.info('You do not need to answer all 15 questions, but the more questions you answer, the more accurate'
-#                 ' result you will get')
-#         st.write("1.What is your preferred condo total square feet")
-#         total_sqft = st.slider(label='sqft', min_value=200, max_value=8000, key=77)
+    # predict price
+    def main():
+        # st.subheader('Project 1: Toronto condo price prediction')
+        html_temp = """
+        <div style="background-color:#025246 ;padding:10px">
+        <h2 style="color:white;text-align:center;">
+        Toronto Condo Price Prediction ML App </h2>
+        </div>
+        """
+        st.markdown(html_temp, unsafe_allow_html=True)
+        st.info('You do not need to answer all 15 questions, but the more questions you answer, the more accurate'
+                ' result you will get')
+        st.write("1.What is your preferred condo total square feet")
+        total_sqft = st.slider(label='sqft', min_value=200, max_value=8000, key=77)
 
-#         st.write(
-#             "2.what is your expect condo maintenance fee per month? e.g., the average maintenance fee is about $0.64 "
-#             "per-square-foot in toronto, i.e.,1000 sqft with maintenance fee 640")
-#         maint_fee = st.slider(label='maintenance fee', min_value=100, max_value=7000, key=55)
+        st.write(
+            "2.what is your expect condo maintenance fee per month? e.g., the average maintenance fee is about $0.64 "
+            "per-square-foot in toronto, i.e.,1000 sqft with maintenance fee 640")
+        maint_fee = st.slider(label='maintenance fee', min_value=100, max_value=7000, key=55)
 
-#         st.write("3.your household income per year")
-#         avg_income_household_yr = st.slider(label='income', min_value=40000, max_value=500000, key=66)
+        st.write("3.your household income per year")
+        avg_income_household_yr = st.slider(label='income', min_value=40000, max_value=500000, key=66)
 
-#         parking = st.selectbox("4.your expect number of parkings", (0, 1, 2, 3, 4, 5, 6, 7))
+        parking = st.selectbox("4.your expect number of parkings", (0, 1, 2, 3, 4, 5, 6, 7))
 
-#         st.write("5.What is your expect age of building?")
-#         age_of_building = st.slider(label='age of building', min_value=0, max_value=100, key=99)
+        st.write("5.What is your expect age of building?")
+        age_of_building = st.slider(label='age of building', min_value=0, max_value=100, key=99)
 
-#         col6, col7 = st.columns(2)
-#         with col6:
-#             commute_transit = st.slider(label="6.How often you take public transportation?", min_value=0, max_value=100,
-#                                         key=6)
-#         with col7:
-#             commute_car = st.slider(label="7.How often you drive car?", min_value=0, max_value=100 - commute_transit,
-#                                     key=7)
+        col6, col7 = st.columns(2)
+        with col6:
+            commute_transit = st.slider(label="6.How often you take public transportation?", min_value=0, max_value=100,
+                                        key=6)
+        with col7:
+            commute_car = st.slider(label="7.How often you drive car?", min_value=0, max_value=100 - commute_transit,
+                                    key=7)
 
-#         near_by_schools = st.selectbox("8.your expect nearby schools?", (0, 1, 2, 3, 4, 5, 6, 7))
+        near_by_schools = st.selectbox("8.your expect nearby schools?", (0, 1, 2, 3, 4, 5, 6, 7))
 
-#         st.write("9.your expect bars or restaurant near you")
-#         near_by_bars = st.slider(label='bars & restaurant', min_value=0, max_value=100, key=100)
+        st.write("9.your expect bars or restaurant near you")
+        near_by_bars = st.slider(label='bars & restaurant', min_value=0, max_value=100, key=100)
 
-#         st.write('10.Select your preferred ethnic group in your neighborhood')
-#         st.info('Please set first English slider to 0 if you want reset')
-#         col1, col2, col3, col4, col5 = st.columns(5)
+        st.write('10.Select your preferred ethnic group in your neighborhood')
+        st.info('Please set first English slider to 0 if you want reset')
+        col1, col2, col3, col4, col5 = st.columns(5)
 
-#         with col1:
-#             speak_English = st.slider(label='for English', min_value=0, max_value=100, key=5)
-#         with col2:
-#             speak_Europe_language = st.slider(label='for European', min_value=0, max_value=100 - speak_English, key=4)
-#         with col3:
-#             speak_Africa_language = st.slider(label='for African', min_value=0,
-#                                               max_value=100 - speak_English - speak_Europe_language, key=3)
-#         with col4:
-#             value1 = st.slider(label='for Asian', min_value=0,
-#                                max_value=100 - speak_English - speak_Europe_language - speak_Africa_language, key=2)
-#         with col5:
-#             value5 = st.slider(label='for Middle East', min_value=0,
-#                                max_value=100 - speak_English - speak_Europe_language - speak_Africa_language - value1,
-#                                key=0)
+        with col1:
+            speak_English = st.slider(label='for English', min_value=0, max_value=100, key=5)
+        with col2:
+            speak_Europe_language = st.slider(label='for European', min_value=0, max_value=100 - speak_English, key=4)
+        with col3:
+            speak_Africa_language = st.slider(label='for African', min_value=0,
+                                              max_value=100 - speak_English - speak_Europe_language, key=3)
+        with col4:
+            value1 = st.slider(label='for Asian', min_value=0,
+                               max_value=100 - speak_English - speak_Europe_language - speak_Africa_language, key=2)
+        with col5:
+            value5 = st.slider(label='for Middle East', min_value=0,
+                               max_value=100 - speak_English - speak_Europe_language - speak_Africa_language - value1,
+                               key=0)
 
-#         st.write("11.How much would you like to live with below education background people?")
-#         col8, col9, col10 = st.columns(3)
-#         with col8:
-#             edu_coll_or_univ_cert = st.slider(label="own college or university certificate", min_value=0, max_value=100,
-#                                               key=8)
-#         with col9:
-#             edu_trade_cert = st.slider(label="own trade certificate", min_value=0,
-#                                        max_value=100 - edu_coll_or_univ_cert, key=9)
-#         with col10:
-#             edu_no_diploma = st.slider(label="no diploma", min_value=0,
-#                                        max_value=100 - edu_coll_or_univ_cert - edu_trade_cert, key=10)
+        st.write("11.How much would you like to live with below education background people?")
+        col8, col9, col10 = st.columns(3)
+        with col8:
+            edu_coll_or_univ_cert = st.slider(label="own college or university certificate", min_value=0, max_value=100,
+                                              key=8)
+        with col9:
+            edu_trade_cert = st.slider(label="own trade certificate", min_value=0,
+                                       max_value=100 - edu_coll_or_univ_cert, key=9)
+        with col10:
+            edu_no_diploma = st.slider(label="no diploma", min_value=0,
+                                       max_value=100 - edu_coll_or_univ_cert - edu_trade_cert, key=10)
 
-#         st.write("12.How willing are you to live with people aged 35 to 49?")
-#         population_35_49_years = st.slider(label='population age', min_value=0, max_value=100, key=101)
+        st.write("12.How willing are you to live with people aged 35 to 49?")
+        population_35_49_years = st.slider(label='population age', min_value=0, max_value=100, key=101)
 
-#         st.write("13.How willing are you like to live in below property type?")
-#         col11, col12 = st.columns(2)
-#         with col11:
-#             tenancy_property_type_low_rise = st.slider(label="low rise", min_value=0, max_value=80, key=11)
-#         with col12:
-#             tenancy_property_type_semi_detached = st.slider(label="semi_detached", min_value=0,
-#                                                             max_value=80 - tenancy_property_type_low_rise, key=12)
+        st.write("13.How willing are you like to live in below property type?")
+        col11, col12 = st.columns(2)
+        with col11:
+            tenancy_property_type_low_rise = st.slider(label="low rise", min_value=0, max_value=80, key=11)
+        with col12:
+            tenancy_property_type_semi_detached = st.slider(label="semi_detached", min_value=0,
+                                                            max_value=80 - tenancy_property_type_low_rise, key=12)
 
-#         bedrooms_plus_field = st.selectbox("14.how many areas would you like to own as alternative bedrooms?",
-#                                            (0, 1, 2))
+        bedrooms_plus_field = st.selectbox("14.how many areas would you like to own as alternative bedrooms?",
+                                           (0, 1, 2))
 
-#         st.write("15.How willing are you like to live in below region?")
-#         col13, col14, col15, col16, col17 = st.columns(5)
-#         with col13:
-#             downtown = st.slider(label="Downtown", min_value=0, max_value=100, key=13)
-#         with col14:
-#             north_york = st.slider(label="North York", min_value=0, max_value=100 - downtown, key=14)
-#         with col15:
-#             scarborough = st.slider(label="Scarborough", min_value=0, max_value=100 - downtown - north_york, key=15)
-#         with col16:
-#             midtown = st.slider(label="Midtown", min_value=0, max_value=100 - downtown - north_york - scarborough,
-#                                 key=16)
-#         with col17:
-#             york_crosstown = st.slider(label="York Crosstown", min_value=0,
-#                                        max_value=100 - downtown - north_york - scarborough - midtown, key=17)
+        st.write("15.How willing are you like to live in below region?")
+        col13, col14, col15, col16, col17 = st.columns(5)
+        with col13:
+            downtown = st.slider(label="Downtown", min_value=0, max_value=100, key=13)
+        with col14:
+            north_york = st.slider(label="North York", min_value=0, max_value=100 - downtown, key=14)
+        with col15:
+            scarborough = st.slider(label="Scarborough", min_value=0, max_value=100 - downtown - north_york, key=15)
+        with col16:
+            midtown = st.slider(label="Midtown", min_value=0, max_value=100 - downtown - north_york - scarborough,
+                                key=16)
+        with col17:
+            york_crosstown = st.slider(label="York Crosstown", min_value=0,
+                                       max_value=100 - downtown - north_york - scarborough - midtown, key=17)
 
-#         col18, col19, col20, col21 = st.columns(4)
-#         with col18:
-#             east_end = st.slider(label="East End", min_value=0,
-#                                  max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown, key=18)
-#         with col19:
-#             east_york = st.slider(label="East York", min_value=0,
-#                                   max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end,
-#                                   key=19)
-#         with col20:
-#             etobicoke = st.slider(label="Etobicoke", min_value=0,
-#                                   max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end - east_york,
-#                                   key=20)
-#         with col21:
-#             west_end = st.slider(label="West End", min_value=0,
-#                                  max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end - east_york - etobicoke,
-#                                  key=21)
-#         # predict_dataset
-#         raw_instances = np.array([[maint_fee, avg_income_household_yr, total_sqft, parking,
-#                                    age_of_building, commute_transit, commute_car, near_by_schools, near_by_bars,
-#                                    speak_English, speak_Europe_language, speak_Africa_language, edu_no_diploma,
-#                                    edu_trade_cert,
-#                                    edu_coll_or_univ_cert, population_35_49_years, tenancy_property_type_semi_detached,
-#                                    tenancy_property_type_low_rise, bedrooms_plus_field, east_end, east_york, etobicoke,
-#                                    midtown]]).astype(np.float64)
-#         predict_df = pd.read_csv('predict_dataset.csv',
-#                                  index_col=[0])
-#         scaler = StandardScaler()
-#         X_train_Test = scaler.fit_transform(predict_df.values)
-#         scaled_instances = scaler.transform(raw_instances)
-#         input = np.array(scaled_instances).astype(np.float64)
-#         output = model.predict(input)
-#         # st.write(a)
-
-
-#         if st.button("Predict"):
-#             # output = a
-#             st.balloons()
-#             st.success('The condo price will be approximately {}:'.format(output))
+        col18, col19, col20, col21 = st.columns(4)
+        with col18:
+            east_end = st.slider(label="East End", min_value=0,
+                                 max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown, key=18)
+        with col19:
+            east_york = st.slider(label="East York", min_value=0,
+                                  max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end,
+                                  key=19)
+        with col20:
+            etobicoke = st.slider(label="Etobicoke", min_value=0,
+                                  max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end - east_york,
+                                  key=20)
+        with col21:
+            west_end = st.slider(label="West End", min_value=0,
+                                 max_value=100 - downtown - north_york - scarborough - midtown - york_crosstown - east_end - east_york - etobicoke,
+                                 key=21)
+        # predict_dataset
+        raw_instances = np.array([[maint_fee, avg_income_household_yr, total_sqft, parking,
+                                   age_of_building, commute_transit, commute_car, near_by_schools, near_by_bars,
+                                   speak_English, speak_Europe_language, speak_Africa_language, edu_no_diploma,
+                                   edu_trade_cert,
+                                   edu_coll_or_univ_cert, population_35_49_years, tenancy_property_type_semi_detached,
+                                   tenancy_property_type_low_rise, bedrooms_plus_field, east_end, east_york, etobicoke,
+                                   midtown]]).astype(np.float64)
+        predict_df = pd.read_csv('predict_dataset.csv',
+                                 index_col=[0])
+        scaler = StandardScaler()
+        X_train_Test = scaler.fit_transform(predict_df.values)
+        scaled_instances = scaler.transform(raw_instances)
+        input = np.array(scaled_instances).astype(np.float64)
+        output = model.predict(input)
+        # st.write(a)
 
 
-#     if __name__ == '__main__':
-#         main()
+        if st.button("Predict"):
+            # output = a
+            st.balloons()
+            st.success('The condo price will be approximately {}:'.format(output))
+
+
+    if __name__ == '__main__':
+        main()
 
 elif choose == "Condo clustering":
     # open pdf
