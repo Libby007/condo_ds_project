@@ -1,6 +1,6 @@
 pandas
 numpy
-sklearn
+scikit-learn
 streamlit
 streamlit_option_menu
 xgboost
